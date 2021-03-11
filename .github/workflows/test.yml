@@ -43,6 +43,12 @@ jobs:
         with:
           source_directory: ${{matrix.package}}
           artifacts_directory: artifacts
+      - name: Test run (Custom image)
+        uses: ./
+        with:
+          source_directory: micro
+          artifacts_directory: artifacts
+          docker_image: debian:buster
       - name: Check files
         run: |
           ls -lh artifacts/${{matrix.package}}*.*
