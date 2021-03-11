@@ -30,6 +30,7 @@ async function main() {
     try {
         const sourceRelativeDirectory = core.getInput("source_directory") || "./"
         const artifactsRelativeDirectory = core.getInput("artifacts_directory") || "./"
+        const dockerImage = core.getInput("image")
 
         const workspaceDirectory = process.cwd()
         const sourceDirectory = path.join(workspaceDirectory, sourceRelativeDirectory)
@@ -41,10 +42,10 @@ async function main() {
         const regex = /^(?<pkg>.+) \(((?<epoch>[0-9]+):)?(?<version>[^:-]+)(-(?<revision>[^:-]+))?\) (?<distribution>.+);/
         const match = changelog.match(regex)
         const { pkg, epoch, version, revision, distribution } = match.groups
+        const container = pkg
         const imageName = await getImageName(distribution)
         const imageTag = await getImageTag(imageName, distribution)
-        const container = pkg
-        const image = imageName + ":" + imageTag
+        const image = dockerImage || imageName + ":" + imageTag
 
         fs.mkdirSync(artifactsDirectory, { recursive: true })
 
