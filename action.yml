@@ -12,8 +12,8 @@ inputs:
     description: Directory where build artifacts will be placed, relative to workspace
     required: false
     default: ./
-  docker_image:
-    description:
+  image:
+    description: Docker image to run build in
     required: false
 runs:
   using: node12
