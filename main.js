@@ -26,12 +26,6 @@ async function getImageName(distribution) {
     }
 }
 
-async function getImage(distribution) {
-    const imageName = await getImageName(distribution)
-    const imageTag = await getImageTag(imageName, distribution)
-    return imageName + ":" + imageTag
-}
-
 async function main() {
     try {
         const sourceRelativeDirectory = core.getInput("source_directory") || "./"
@@ -49,7 +43,9 @@ async function main() {
         const match = changelog.match(regex)
         const { pkg, epoch, version, revision, distribution } = match.groups
         const container = pkg
-        const image = dockerImage || await getImage(distribution)
+        const imageName = await getImageName(distribution)
+        const imageTag = await getImageTag(imageName, distribution)
+        const image = dockerImage || imageName + ":" + imageTag
 
         fs.mkdirSync(artifactsDirectory, { recursive: true })
 
