@@ -10,5 +10,5 @@ An action that builds a Debian package from source in a Docker container.
   with:
     source_directory: lolcat # optional, relative to workspace directory
     artifacts_directory: output # optional, relative to workspace directory
-    docker_image: # optional, docker image name
+    image: # optional, docker image to run build in 
 ```

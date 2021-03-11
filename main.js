@@ -30,7 +30,7 @@ async function main() {
     try {
         const sourceRelativeDirectory = core.getInput("source_directory") || "./"
         const artifactsRelativeDirectory = core.getInput("artifacts_directory") || "./"
-        const dockerImage = core.getInput("docker_image")
+        const dockerImage = core.getInput("image")
 
         const workspaceDirectory = process.cwd()
         const sourceDirectory = path.join(workspaceDirectory, sourceRelativeDirectory)
@@ -130,7 +130,7 @@ async function main() {
         await exec.exec("docker", [
             "exec",
             container,
-            "apt-get", "install", "-yq", "-t", imageTag, "dpkg-dev", "debhelper", "devscripts"
+            "apt-get", "install", "-yq", "dpkg-dev", "debhelper", "devscripts"
         ])
         core.endGroup()
 
@@ -138,7 +138,7 @@ async function main() {
         await exec.exec("docker", [
             "exec",
             container,
-            "apt-get", "build-dep", "-yq", "-t", imageTag, sourceDirectory
+            "apt-get", "build-dep", "-yq", sourceDirectory
         ])
         core.endGroup()
 

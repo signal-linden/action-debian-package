@@ -15,24 +15,35 @@ jobs:
           - package: at
             repo: https://salsa.debian.org/debian/at.git
             ref: debian/3.1.23-1
+            image: null
           - package: lolcat
             repo: https://salsa.debian.org/ruby-team/lolcat.git
             ref: debian/100.0.1-2
+            image: null
           - package: micro
             repo: https://salsa.debian.org/go-team/packages/micro.git
             ref: debian/2.0.6-2_bpo10+1
+            image: null
+          - package: micro
+            repo: https://salsa.debian.org/go-team/packages/micro.git
+            ref: debian/2.0.6-2_bpo10+1
+            image: debian:buster
           - package: deber
             repo: https://github.com/dawidd6/deber.git
             ref: v1.0.0
+            image: null
           - package: lazygit
             repo: https://github.com/dawidd6/lazygit-debian.git
             ref: ubuntu/0.16.2-1
+            image: null
           - package: netcat-openbsd
             repo: https://git.launchpad.net/ubuntu/+source/netcat-openbsd
             ref: import/1.206-1ubuntu1
+            image: null
           - package: iproute2
             repo: https://git.launchpad.net/ubuntu/+source/iproute2
             ref: import/4.18.0-1ubuntu2_ubuntu18.04.1
+            image: null
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -43,12 +54,7 @@ jobs:
         with:
           source_directory: ${{matrix.package}}
           artifacts_directory: artifacts
-      - name: Test run (Custom image)
-        uses: ./
-        with:
-          source_directory: micro
-          artifacts_directory: artifacts
-          docker_image: debian:buster
+          image: ${{matrix.image}}
       - name: Check files
         run: |
           ls -lh artifacts/${{matrix.package}}*.*
